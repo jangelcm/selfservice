@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import pe.com.targethr.authserver.dao.EmpleadoRepository;
 import pe.com.targethr.authserver.dao.UsuarioRepository;
 import pe.com.targethr.authserver.model.entity.EmpleadoEntity;
-import pe.com.targethr.authserver.model.entity.EmpleadoEntityBCK;
 import pe.com.targethr.authserver.model.entity.UsuarioEntity;
 import pe.com.targethr.authserver.model.entity.pk.EmpleadoId;
 import pe.com.targethr.authserver.model.jwt.CustomClaims;

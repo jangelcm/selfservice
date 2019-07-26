@@ -38,8 +38,10 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         UsuarioEntity usr = usuarioRepository.findByUsernameAndActivated(authentication.getName(), 1).get();
         customClaims.setCodigoUsuario(usr.getUserId().toString());
 
+        UsuarioEntity usuarioAll = empleadoRepository.getUsuarioAll(usr.getUserId()).get();
+
        log.info("buscando empleado del usuario {}", usr.getUserId());
-        EmpleadoEntity emp = empleadoRepository.findByCodigoUsuarioAndEstado(usr.getUserId(), "1").get();
+        /*EmpleadoEntity emp = empleadoRepository.findByCodigoUsuarioAndEstado(usr.getUserId(), "1").get();
         log.info("empleado encontrado [cod_cia: {}, cod_suc: {}, cod_tra: {}]", emp.getId().getIdSucursal(),
                 emp.getId().getCodigoTrabajador());
         customClaims.setCodigoCompania("034");
@@ -50,11 +52,21 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         customClaims.setApellidoMaterno(emp.getApellidoMaterno());
         customClaims.setEmail(emp.getEmail());
         customClaims.setCodigoTrabajadorJefe(emp.getJefeCodigo());
+        customClaims.setNivel("2");*/
+
+        customClaims.setCodigoCompania("23");
+        customClaims.setCodigoSucursal(""+usuarioAll.getEmpleado().getId().getIdSucursal());
+        customClaims.setCodigoTrabajador(""+usuarioAll.getEmpleado().getId().getCodigoTrabajador());
+        customClaims.setNombre(usuarioAll.getEmpleado().getNombre());
+        customClaims.setApellidoPaterno(usuarioAll.getEmpleado().getApellidoPaterno());
+        customClaims.setApellidoMaterno(usuarioAll.getEmpleado().getApellidoMaterno());
+        customClaims.setEmail(usuarioAll.getEmpleado().getEmail());
+        customClaims.setCodigoTrabajadorJefe(usuarioAll.getEmpleado().getJefeCodigo());
         customClaims.setNivel("2");
 
-        log.info("buscando subordinados del empleado {}", emp.getId().getCodigoTrabajador());
-        long subordinados = empleadoRepository.countByCodigoTrabajadorJefe(""+emp.getId().getIdSucursal(),
-                emp.getId().getCodigoTrabajador());
+       // log.info("buscando subordinados del empleado {}", emp.getId().getCodigoTrabajador());
+        long subordinados = empleadoRepository.countByCodigoTrabajadorJefe(""+usuarioAll.getEmpleado().getId().getIdSucursal(),
+                usuarioAll.getEmpleado().getId().getCodigoTrabajador());
         log.debug("nro de subordinados: {}", subordinados);
         customClaims.setJefe(subordinados > 0);
 

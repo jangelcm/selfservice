@@ -1,14 +1,14 @@
 package pe.com.targethr.authserver.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name="TECH_USER")
-public class UsuarioEntity {
+public class UsuarioEntity implements Serializable {
+
+    private static final long serialVersionUID =  -9017650847571487336L;
 
     @Id
     @Column(name="USER_ID")
@@ -58,6 +58,11 @@ public class UsuarioEntity {
 
     @Column(name="LAST_MODIFIED_DATE")
     private Date lastModifiedDate;
+
+    @OneToOne
+    @JoinColumn(name="ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL")
+    @JoinColumn(name="CODIGO_TRABAJADOR",referencedColumnName = "CODIGO_TRABAJADOR")
+    private EmpleadoEntity empleado;
 
 
     public Long getUserId() {
@@ -186,5 +191,14 @@ public class UsuarioEntity {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+
+    public EmpleadoEntity getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(EmpleadoEntity empleado) {
+        this.empleado = empleado;
     }
 }

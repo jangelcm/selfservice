@@ -1,16 +1,17 @@
 package pe.com.targethr.authserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import pe.com.targethr.authserver.model.entity.pk.EmpleadoId;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table( name="HR_EMPLEADO" )
-public class EmpleadoEntity {
+public class EmpleadoEntity implements Serializable {
+
+    private static final long serialVersionUID =  -9017650847571487336L;
 
     @EmbeddedId
     private EmpleadoId id;
@@ -218,6 +219,10 @@ public class EmpleadoEntity {
 
     @Column(name="ACTIVATED")
     private Integer activated;
+
+    @OneToOne(mappedBy = "empleado" )
+    @JsonBackReference
+    private UsuarioEntity usuarioEntity ;
 
 
     public String getCodigoAntiguo() {
@@ -771,5 +776,14 @@ public class EmpleadoEntity {
 
     public void setId(EmpleadoId id) {
         this.id = id;
+    }
+
+
+    public UsuarioEntity getUsuarioEntity() {
+        return usuarioEntity;
+    }
+
+    public void setUsuarioEntity(UsuarioEntity usuarioEntity) {
+        this.usuarioEntity = usuarioEntity;
     }
 }
